@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expanded Binary Notation Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"] {
+      width: calc(100% - 24px);
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      word-break: break-word;
+    }
+    .toggle-option {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Expanded Binary Notation Tool</h2>
+    <label for="input-number">Input Number:</label>
+    <input type="text" id="input-number" placeholder="Enter number">
+
+    <div class="toggle-option">
+      <input type="checkbox" id="show-powers">
+      <label for="show-powers">Show as powers of 2 (e.g. 2^12)</label>
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function generateExpandedBinaryNotation() {
+      let input = document.getElementById('input-number').value.replace(/,/g, "");
+      let resultDiv = document.getElementById('result');
+      let showPowers = document.getElementById('show-powers').checked;
+
+      if (isNaN(input) || input.trim() === "" || Number(input) < 0) {
+        resultDiv.innerText = "Please enter a valid non-negative number.";
+        return;
+      }
+
+      let num = BigInt(input);
+      if (num === 0n) {
+        resultDiv.innerText = "0";
+        return;
+      }
+
+      let parts = [];
+      let power = 0n;
+      while ((1n << power) <= num) {
+        if ((num & (1n << power)) !== 0n) {
+          if (showPowers) {
+            parts.unshift(`2^${power.toString()}`);
+          } else {
+            parts.unshift(numberWithCommas((1n << power).toString()));
+          }
+        }
+        power++;
+      }
+
+      resultDiv.innerText = parts.join(" + ");
+    }
+
+    document.getElementById('input-number').addEventListener('input', generateExpandedBinaryNotation);
+    document.getElementById('show-powers').addEventListener('change', generateExpandedBinaryNotation);
+  </script>
+</body>
+</html>
