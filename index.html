@@ -77,7 +77,12 @@
       const exponent = Math.floor(Math.log10(Math.abs(n)));
       const rawMantissa = n / Math.pow(10, exponent);
       let mantissa = rawMantissa.toFixed(3).replace(/\.?0+$/, '');
-      return `${mantissa}x10^${exponent}`;
+
+      // Check if mantissa * 10^exponent exactly equals input
+      const reconstructed = Number(mantissa) * Math.pow(10, exponent);
+      const approx = reconstructed !== n ? "≈" : "";
+
+      return `${approx}${mantissa}x10^${exponent}`;
     }
 
     function generateExpandedBinaryNotation(input) {
