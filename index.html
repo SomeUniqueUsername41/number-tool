@@ -33,6 +33,14 @@
       border-radius: 3px;
       word-break: break-word;
     }
+    .description {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background: #f9f9f9;
+      display: none; /* hidden by default */
+    }
   </style>
 </head>
 <body>
@@ -51,6 +59,10 @@
     </select>
 
     <div class="result" id="result"></div>
+  </div>
+
+  <div class="container description" id="binary-description">
+    <p><strong>Expanded Binary Notation:</strong> This format shows a number as a sum of powers of two, similar to expanded notation in decimal. So the number 999 in expanded binary notation would be "512 + 256 + 128 + 64 + 32 + 4 + 2 + 1".</p>
   </div>
 
   <script>
@@ -84,7 +96,6 @@
     }
 
     function squareRootNotation(input) {
-      // output: √(input^2)
       const n = Number(input);
       if (n === 0) return "0";
       const squared = n * n;
@@ -101,6 +112,10 @@
       const inputRaw = document.getElementById('input-number').value.replace(/,/g, '');
       const mode = document.getElementById('mode-select').value;
       const resultDiv = document.getElementById('result');
+      const binaryDesc = document.getElementById('binary-description');
+
+      // Show/hide the description
+      binaryDesc.style.display = (mode === "binary-values") ? "block" : "none";
 
       if (inputRaw.trim() === '' || isNaN(inputRaw) || Number(inputRaw) < 0 && mode !== "sqrt-notation") {
         resultDiv.innerText = "Please enter a valid non-negative number.";
